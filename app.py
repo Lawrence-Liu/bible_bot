@@ -1,7 +1,7 @@
 #!/Users/lawrence/anaconda/bin/python
 import tweepy, sys, time, datetime
-
-with open('/Users/lawrence/Documents/twitter_bot/keys.pass', 'r') as keys:
+from tweepy import TweepError
+with open('/Users/lawrence/bible_bot/keys.pass', 'r') as keys:
     CONSUMER_KEY = keys.readline().split(':')[1].strip('\n')
     CONSUMER_SECRET = keys.readline().split(':')[1].strip('\n')
     ACCESS_KEY = keys.readline().split(':')[1].strip('\n')
@@ -16,8 +16,10 @@ today = datetime.date.today()
 date_delta = today - begin_day
 num_days = date_delta.days
 
-with open('/Users/lawrence/Downloads/derby/bible.txt', 'r') as bible:
-    status_text = bible.readlines()[num_days]
-    api.update_status(status = status_text)
-
-print 'test'
+with open('/Users/lawrence/bible_bot/bible.txt', 'r') as bible:
+    try:
+    	status_text = bible.readlines()[num_days]
+    	api.update_status(status = status_text)
+    	print 'post successfully'
+    except TweepError as e:
+    	print e
